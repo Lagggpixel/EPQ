@@ -1,14 +1,9 @@
 package me.reid.plots;
 
 import lombok.SneakyThrows;
-import me.reid.Main;
 import me.reid.utils.ExcelUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Reid
- * Created on January 24, 2024
+ * @since January 24, 2024
  */
 public class Plot2D extends JPanel {
 
@@ -33,8 +28,8 @@ public class Plot2D extends JPanel {
   private final Color pointColor = Color.RED;
   private final Color lineColor = Color.BLUE;
 
-  int x_max = 350;
-  int y_max = 350;
+  int x_max = 400;
+  int y_max = 400;
   int marg = 20;
 
   private static XSSFSheet sheet;
@@ -52,7 +47,6 @@ public class Plot2D extends JPanel {
     sheet = workbook.getSheet(sheetName);
     x_values = ExcelUtils.getColumnValues(sheet,6);
     y_values = ExcelUtils.getColumnValues(sheet,7);
-
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.add(this);

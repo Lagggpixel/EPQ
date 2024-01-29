@@ -1,7 +1,7 @@
 package me.reid;
 
 import lombok.SneakyThrows;
-import me.reid.plots.Plot2D;
+import me.reid.plots.Plot3D;
 
 /**
  * @author Reid
@@ -11,6 +11,8 @@ public class Main {
 
   @SneakyThrows
   public static void main(String[] args) {
-    new Plot2D("Trial 3");
+    // new Plot2D("Trial 2");
+
+    new Plot3D("Trial 3");
   }
-}
+} 
