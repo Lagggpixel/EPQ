@@ -80,7 +80,6 @@
       <version>1.0.1</version>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
       <groupId>org.jzy3d</groupId>
       <artifactId>jzy3d-everything</artifactId>

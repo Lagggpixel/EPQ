@@ -32,8 +32,6 @@ public class Plot2D extends JPanel {
   int y_max = 400;
   int marg = 20;
 
-  private static XSSFSheet sheet;
-
   private final List<Float> x_values;
   private final List<Float> y_values;
   private List<Float> currentPointsX = new ArrayList<>();
@@ -44,7 +42,7 @@ public class Plot2D extends JPanel {
     super();
     File dataFile = new File("Databook.xlsx");
     XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(dataFile));
-    sheet = workbook.getSheet(sheetName);
+    XSSFSheet sheet = workbook.getSheet(sheetName);
     x_values = ExcelUtils.getColumnValues(sheet,6);
     y_values = ExcelUtils.getColumnValues(sheet,7);
     JFrame frame = new JFrame();

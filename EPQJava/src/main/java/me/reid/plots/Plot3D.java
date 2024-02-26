@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class Plot3D {
 
   private final int LENGTH = 400;
@@ -35,8 +36,8 @@ public class Plot3D {
 
   private final XSSFSheet sheet;
   private final Coord3d[] coords;
-  private Chart chart;
-  private Scatter scatter;
+  private final Chart chart;
+  private final Scatter scatter;
 
   private final Color pointColor = Color.RED;
   private final Color[] pointColors = new Color[10];
@@ -94,6 +95,8 @@ public class Plot3D {
     this.chart.getAxisLayout().setYAxisLabel("Y axis");
     this.chart.getAxisLayout().setZAxisLabel("Z axis");
 
+    // this.chart.setAxeDisplayed(false);
+
     this.chart.open("3d Modeling");
     this.chart.addMouse();
 
@@ -108,6 +111,5 @@ public class Plot3D {
     this.scatter.setColors(pointColors);
     this.scatter.setData(Arrays.stream(coords).toList().subList(counter, counter + 10));
     this.scatter.setWidth(3);
-    System.out.println(Arrays.toString(this.scatter.getData()));
   }
 }
