@@ -10,8 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MaximaValue {
 
@@ -19,7 +18,7 @@ public class MaximaValue {
   public static void generate(String sheetName) {
     File dataFile = new File("Databook.xlsx");
 
-    List<Double> maximaTimes = new ArrayList<>();
+    Map<Double, Double> maximaTimes = new HashMap<>();
 
     XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(dataFile));
     XSSFSheet sheet = workbook.getSheet(sheetName);
@@ -34,6 +33,10 @@ public class MaximaValue {
         continue;
       }
       Cell timeValueCell = row.getCell(0);
+      if (timeValueCell == null) {
+        cont = false;
+        continue;
+      }
       if (timeValueCell.getCellType() == CellType.BLANK) {
         cont = false;
         continue;
@@ -42,25 +45,39 @@ public class MaximaValue {
       if (timeValue == 0) {
         cont = false;
       }
-      Cell maximaCell = row.getCell(9);
-      if (maximaCell != null && maximaCell.getCellType() == CellType.FORMULA) {
-        maximaTimes.add(timeValueCell.getNumericCellValue());
+      Cell maximaCell = row.getCell(6);
+      if (maximaCell != null && (maximaCell.getCellType() == CellType.FORMULA || maximaCell.getCellType() == CellType.NUMERIC)) {
+        maximaTimes.put(timeValueCell.getNumericCellValue(), maximaCell.getNumericCellValue());
       }
       dataRowInt++;
     }
 
-    System.out.println(maximaTimes);
-    int outputRowInt = 1;
-    for (Double maximaTime : maximaTimes) {
-      Row row = sheet.getRow(outputRowInt);
 
-      Cell indexCell = row.createCell(34, CellType.NUMERIC);
-      indexCell.setCellValue(outputRowInt);
-      Cell valueCell = row.createCell(35, CellType.NUMERIC);
-      valueCell.setCellValue(maximaTime);
+    List<Map.Entry<Double, Double>> entryList = new ArrayList<>(maximaTimes.entrySet());
 
-      outputRowInt++;
+    entryList.sort((entry1, entry2) -> {
+      double size1 = Math.abs(entry1.getKey() - entry1.getValue());
+      double size2 = Math.abs(entry2.getKey() - entry2.getValue());
+      return Double.compare(size1, size2);
+    });
+
+    LinkedHashMap<Double, Double> sortedMap = new LinkedHashMap<>();
+    for (Map.Entry<Double, Double> entry : entryList) {
+      sortedMap.put(entry.getKey(), entry.getValue());
     }
+
+    System.out.println(sortedMap);
+    final int[] outputRowInt = {1};
+    sortedMap.forEach((k, v) -> {
+      Row row = sheet.getRow(outputRowInt[0]);
+
+      Cell indexCell = row.createCell(12, CellType.NUMERIC);
+      indexCell.setCellValue(k);
+      Cell valueCell = row.createCell(13, CellType.NUMERIC);
+      valueCell.setCellValue(v);
+
+      outputRowInt[0]++;
+    });
 
     OutputStream fileOut = new java.io.FileOutputStream(dataFile);
     workbook.write(fileOut);

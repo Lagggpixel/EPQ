@@ -14,7 +14,7 @@ public class Main {
     // new Plot2D("Trial 2");
     // new Plot3D("Trial 3");
 
-    MaximaValue.generate("Trial 2");
-
+    MaximaValue.generate("1_10cm_1");
+    //PeakGeneration.generate("1_10cm_1", 5, 6);
   }
 } 
